@@ -10,10 +10,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,6 +21,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -40,20 +41,46 @@ public class User implements UserDetails {
     @EqualsAndHashCode.Exclude
     private Long id;
 
+    @Column(unique = true, nullable = false, name = "email")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Неправильний формат пошти")
+    private String email;
+
     @Column(unique = true, nullable = false, name = "phone_number")
-    @Size(min = 12, max = 12)
+    @Pattern(regexp = "^0\\d{9}$", message = "Номер телефону повинен бути у форматі 380XXXXXXXXX")
     private String phoneNumber;
 
     @Column(nullable = false)
-    @Size(min = 8, max = 50)
+    @Size(min = 8)
     private String password;
 
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Column(name = "verification_expiry")
+    private LocalDateTime verificationExpiry;
+
+    @Column(name = "password_reset_code")
+    private String passwordResetCode;
+
+    @Column(name = "password_reset_expiry")
+    private LocalDateTime passwordResetExpiry;
+
+    @Column(name = "pending_email")
+    private String pendingEmail;
+
+    @Column(name = "email_verification_code")
+    private String emailVerificationCode;
+
+    @Column(name = "email_verification_expiry")
+    private LocalDateTime emailVerificationExpiry;
+
+
     @Column(nullable = false, name = "first_name")
-    @Size(min = 2, max = 255)
+    @Size(min = 1, max = 255)
     private String firstName;
 
     @Column(nullable = false, name = "last_name")
-    @Size(min = 2, max = 255)
+    @Size(min = 1, max = 255)
     private String lastName;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -78,7 +105,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return phoneNumber;
+        return email;
     }
 
     @Override

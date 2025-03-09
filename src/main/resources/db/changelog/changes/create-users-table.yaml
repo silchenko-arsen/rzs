@@ -14,6 +14,12 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
                   name: phone_number
                   type: varchar(255)
                   constraints:
@@ -34,6 +40,27 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: verification_code
+                  type: varchar(255)
+              - column:
+                  name: verification_expiry
+                  type: timestamp
+              - column:
+                  name: password_reset_code
+                  type: varchar(255)
+              - column:
+                  name: password_reset_expiry
+                  type: timestamp
+              - column:
+                  name: pending_email
+                  type: varchar(255)
+              - column:
+                  name: email_verification_code
+                  type: varchar(255)
+              - column:
+                  name: email_verification_expiry
+                  type: timestamp
               - column:
                   name: enabled
                   type: boolean

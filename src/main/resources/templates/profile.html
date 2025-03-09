@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Профіль користувача</title>
+    <script>
+        function hideAllForms() {
+            const forms = document.getElementsByClassName('edit-form');
+            for (let i = 0; i < forms.length; i++) {
+                forms[i].style.display = 'none';
+            }
+        }
+
+        function showForm(formId) {
+            hideAllForms();
+            document.getElementById(formId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+<h1>Ваш профіль</h1>
+
+<p><strong>Пошта:</strong> <span th:text="${user.email}"></span>
+    (<a href="#" onclick="showForm('updateEmailForm'); return false;">Змінити</a>)
+</p>
+<p><strong>Телефон:</strong> <span th:text="${user.phoneNumber}"></span>
+    (<a href="#" onclick="showForm('updatePhoneForm'); return false;">Змінити</a>)
+</p>
+<p><strong>Ім'я:</strong> <span th:text="${user.firstName}"></span>
+    (<a href="#" onclick="showForm('updateFirstNameForm'); return false;">Змінити</a>)
+</p>
+<p><strong>Прізвище:</strong> <span th:text="${user.lastName}"></span>
+    (<a href="#" onclick="showForm('updateLastNameForm'); return false;">Змінити</a>)
+</p>
+<p><strong>Пароль:</strong> ********
+    (<a href="#" onclick="showForm('updatePasswordForm'); return false;">Змінити</a>)
+</p>
+
+<div id="updateEmailForm" class="edit-form" style="display:none;">
+    <h3>Оновлення електронної пошти</h3>
+    <form th:action="@{/profile/update-email}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <label>Нова пошта:
+            <input type="email" name="newEmail" required
+                   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="example@domain.com" />
+        </label>
+        <button type="submit">Надіслати код підтвердження</button>
+    </form>
+</div>
+
+<div id="updatePhoneForm" class="edit-form" style="display:none;">
+    <h3>Оновлення номера телефону</h3>
+    <form th:action="@{/profile/update-phone}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <label>Новий номер телефону:
+            <input type="text" name="newPhone" required pattern="0\d{9}" placeholder="0XXXXXXXXX" />
+        </label>
+        <button type="submit">Оновити номер</button>
+    </form>
+</div>
+
+<div id="updateFirstNameForm" class="edit-form" style="display:none;">
+    <h3>Оновлення імені</h3>
+    <form th:action="@{/profile/update-firstname}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <label>Нове ім'я:
+            <input type="text" name="newFirstName" required />
+        </label>
+        <button type="submit">Оновити ім'я</button>
+    </form>
+</div>
+
+<div id="updateLastNameForm" class="edit-form" style="display:none;">
+    <h3>Оновлення прізвища</h3>
+    <form th:action="@{/profile/update-lastname}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <label>Нове прізвище:
+            <input type="text" name="newLastName" required />
+        </label>
+        <button type="submit">Оновити прізвище</button>
+    </form>
+</div>
+
+<div id="updatePasswordForm" class="edit-form" style="display:none;">
+    <h3>Оновлення паролю</h3>
+    <form th:action="@{/profile/update-password}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <label>Новий пароль:
+            <input type="password" name="newPassword" required />
+        </label>
+        <button type="submit">Оновити пароль</button>
+    </form>
+</div>
+
+<p><a th:href="@{/home}">Повернутися на головну</a></p>
+</body>
+</html>
+

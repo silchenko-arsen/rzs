@@ -6,7 +6,8 @@
 <body>
 <h2>Вхід</h2>
 <form action="/auth/perform_login" method="post">
-    <label>Телефон:</label>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <label>Пошта:</label>
     <input type="text" name="username" required />
     <br>
     <label>Пароль:</label>
@@ -16,5 +17,12 @@
 </form>
 <p th:if="${param.error}" style="color: red;">Неправильний логін або пароль!</p>
 <p th:if="${param.logout}" style="color: green;">Ви вийшли з системи.</p>
+
+<p>
+    <a th:href="@{/auth/register}">Зареєструватися</a>
+</p>
+<p>
+    <a th:href="@{/auth/forgot-password}">Забули пароль?</a>
+</p>
 </body>
 </html>

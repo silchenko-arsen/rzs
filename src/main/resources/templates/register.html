@@ -6,20 +6,25 @@
 <body>
 <h2>Реєстрація</h2>
 <form action="/auth/register" method="post" th:object="${user}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <label>Пошта:</label>
+    <input type="email" th:field="*{email}"
+           pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+           title="Введіть коректну електронну пошту" required />
+    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></p>
     <label>Телефон:</label>
-    <input type="text" th:field="*{phoneNumber}" required />
+    <input type="text" minlength="10" maxlength="10" pattern="0\d{9}" title="Введіть номер у форматі 0XXXXXXXXX" th:field="*{phoneNumber}" required />
     <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" style="color: red;"></p>
-
     <label>Пароль:</label>
-    <input type="password" th:field="*{password}" required />
+    <input type="password" th:field="*{password}" required minlength="8" maxlength="50" />
     <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
 
     <label>Ім'я:</label>
-    <input type="text" th:field="*{firstName}" required />
+    <input type="text" th:field="*{firstName}" required minlength="1" maxlength="255" />
     <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color: red;"></p>
 
     <label>Прізвище:</label>
-    <input type="text" th:field="*{lastName}" required />
+    <input type="text" th:field="*{lastName}" required minlength="1" maxlength="255" />
     <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color: red;"></p>
 
     <button type="submit">Зареєструватися</button>
@@ -27,5 +32,9 @@
 
 <p th:if="${error}" th:text="${error}" style="color: red;"></p>
 <p th:if="${success}" th:text="${success}" style="color: green;"></p>
+
+<p>
+    <a th:href="@{/auth/register}">Зареєструватися</a>
+</p>
 </body>
 </html>
