@@ -1,5 +1,6 @@
 package ua.rzs.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -104,5 +105,20 @@ public class ProfileController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/profile";
+    }
+
+    @GetMapping("/delete")
+    public String deleteProfile(Principal principal,
+                                HttpServletRequest request,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            userService.deleteUser(principal.getName());
+            request.getSession().invalidate();
+            redirectAttributes.addFlashAttribute("message", "Ваш профіль успішно видалено.");
+            return "redirect:/auth/login?deleted";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Не вдалося видалити профіль: " + e.getMessage());
+            return "redirect:/profile";
+        }
     }
 }

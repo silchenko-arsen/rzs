@@ -195,6 +195,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void deleteUser(String email) {
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new IllegalStateException("Користувача не знайдено"));
+            userRepository.delete(user);
+    }
+
     private String generateVerificationCode() {
         return String.format("%06d", random.nextInt(1000000));
     }

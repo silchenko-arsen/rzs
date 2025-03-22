@@ -12,9 +12,11 @@
            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
            title="Введіть коректну електронну пошту" required />
     <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></p>
+
     <label>Телефон:</label>
     <input type="text" minlength="10" maxlength="10" pattern="0\d{9}" title="Введіть номер у форматі 0XXXXXXXXX" th:field="*{phoneNumber}" required />
     <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" style="color: red;"></p>
+
     <label>Пароль:</label>
     <input type="password" th:field="*{password}" required minlength="8" maxlength="50" />
     <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red;"></p>
@@ -34,7 +36,7 @@
 <p th:if="${success}" th:text="${success}" style="color: green;"></p>
 
 <p>
-    <a th:href="@{/auth/register}">Зареєструватися</a>
+    <a th:href="@{/auth/login}">Увійти</a>
 </p>
 </body>
 </html>

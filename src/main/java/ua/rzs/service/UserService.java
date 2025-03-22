@@ -26,4 +26,6 @@ public interface UserService {
     void updateLastName(String currentEmail, String newLastName);
 
     void updatePassword(String currentEmail, String newPassword);
+
+    void deleteUser(String email);
 }

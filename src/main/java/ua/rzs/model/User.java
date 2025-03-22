@@ -12,9 +12,11 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,9 +32,11 @@ import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Builder
 @Table(name = "users")
 @Entity
 public class User implements UserDetails {
@@ -51,6 +55,7 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     @Size(min = 8)
+    @ToString.Exclude
     private String password;
 
     @Column(name = "verification_code")
