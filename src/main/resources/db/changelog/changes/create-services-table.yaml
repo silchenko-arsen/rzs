@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-service-table
+      id: create-services-table
       author: silchenko_arsen
       changes:
         - createTable:

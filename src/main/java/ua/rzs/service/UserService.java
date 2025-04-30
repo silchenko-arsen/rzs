@@ -2,6 +2,8 @@ package ua.rzs.service;
 
 import ua.rzs.model.User;
 
+import java.util.List;
+
 public interface UserService {
     void save(User user);
 
@@ -28,4 +30,8 @@ public interface UserService {
     void updatePassword(String currentEmail, String newPassword);
 
     void deleteUser(String email);
+
+    List<User> findAllUsers();
+
+    User findById(Long id);
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Оформлення замовлення</title>
+</head>
+<body>
+<h1>Оформлення замовлення</h1>
+<form th:action="@{/order}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="serviceItemId" th:value="${serviceItemId}" />
+    <div id="files-list">
+    <label>Виберіть файли (документи чи зображення):
+        <input type="file" name="files" multiple required />
+    </label>
+    </div>
+    <button type="button" id="add">Додати ще файл</button>
+    <br/>
+    <label>Коментар:
+        <textarea name="comment" rows="4" cols="50" required placeholder="Введіть коментар"></textarea>
+    </label>
+    <br/>
+    <button type="submit">Замовити</button>
+</form>
+<p><a th:href="@{/home}">Повернутися на головну</a></p>
+</body>
+
+<script>
+    document.getElementById("add").addEventListener("click", () => {
+        const div = document.getElementById("files-list");
+        const input = document.createElement("input");
+        input.type = "file";
+        input.name = "files";
+        div.append(input);
+    });
+</script>
+</html>

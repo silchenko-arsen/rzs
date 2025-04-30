@@ -12,6 +12,7 @@ import ua.rzs.repository.UserRepository;
 import ua.rzs.repository.RoleRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
@@ -200,6 +201,17 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new IllegalStateException("Користувача не знайдено"));
             userRepository.delete(user);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Користувача не знайдено"));
     }
 
     private String generateVerificationCode() {

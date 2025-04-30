@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Список акаунтів</title>
+</head>
+<body>
+<h1>Усі користувачі системи</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Ім'я</th>
+        <th>Прізвище</th>
+        <th>Профіль</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.email}">Пошта</td>
+        <td th:text="${user.firstName}">Ім'я</td>
+        <td th:text="${user.lastName}">Прізвище</td>
+        <td>
+            <a th:href="@{/profile/{id}(id=${user.id})}">Переглянути профіль</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/home}">Повернутися на головну</a></p>
+</body>
+</html>

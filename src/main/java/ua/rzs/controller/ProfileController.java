@@ -2,16 +2,23 @@ package ua.rzs.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ua.rzs.model.Order;
+import ua.rzs.model.User;
+import ua.rzs.service.OrderService;
 import ua.rzs.service.UserService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/profile")
@@ -19,10 +26,31 @@ import java.security.Principal;
 public class ProfileController {
 
     private final UserService userService;
+    private final OrderService orderService;
+
+    @Secured({"ADMIN", "MANAGER"})
+    @GetMapping("/all")
+    public String listProfiles(Model model) {
+        model.addAttribute("users", userService.findAllUsers());
+        return "profiles";
+    }
+
+    @GetMapping("/{id}")
+    @Secured({"ADMIN", "MANAGER"})
+    public String viewProfile(@PathVariable Long id, Model model) {
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        List<Order> orders = orderService.findByUserId(user.getId());
+        model.addAttribute("orders", orders);
+        return "profile";
+    }
 
     @GetMapping
-    public String showProfile(Model model, Principal principal) {
-        model.addAttribute("user", userService.findByEmail(principal.getName()));
+    public String viewMyProfile(Principal principal, Model model) {
+        User user = userService.findByEmail(principal.getName());
+        model.addAttribute("user", user);
+        List<Order> orders = orderService.findByUserId(user.getId());
+        model.addAttribute("orders", orders);
         return "profile";
     }
 

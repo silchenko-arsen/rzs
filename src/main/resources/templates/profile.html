@@ -1,98 +1,166 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Профіль користувача</title>
     <script>
         function hideAllForms() {
-            const forms = document.getElementsByClassName('edit-form');
-            for (let i = 0; i < forms.length; i++) {
-                forms[i].style.display = 'none';
-            }
+            document.querySelectorAll('.edit-form').forEach(f => f.style.display = 'none');
         }
-
         function showForm(formId) {
             hideAllForms();
             document.getElementById(formId).style.display = 'block';
         }
     </script>
+    <style>
+        .edit-form { margin: 1em 0; padding: .5em; border: 1px solid #ccc; }
+        table { border-collapse: collapse; width: 100%; margin-top: 1em; }
+        th, td { border: 1px solid #ddd; padding: .5em; }
+        th { background: #f0f0f0; }
+    </style>
 </head>
 <body>
-<h1>Ваш профіль</h1>
+<h1>Профіль користувача</h1>
 
-<p><strong>Пошта:</strong> <span th:text="${user.email}"></span>
-    (<a href="#" onclick="showForm('updateEmailForm'); return false;">Змінити</a>)
-</p>
-<p><strong>Телефон:</strong> <span th:text="${user.phoneNumber}"></span>
-    (<a href="#" onclick="showForm('updatePhoneForm'); return false;">Змінити</a>)
-</p>
-<p><strong>Ім'я:</strong> <span th:text="${user.firstName}"></span>
-    (<a href="#" onclick="showForm('updateFirstNameForm'); return false;">Змінити</a>)
-</p>
-<p><strong>Прізвище:</strong> <span th:text="${user.lastName}"></span>
-    (<a href="#" onclick="showForm('updateLastNameForm'); return false;">Змінити</a>)
-</p>
-<p><strong>Пароль:</strong> ********
-    (<a href="#" onclick="showForm('updatePasswordForm'); return false;">Змінити</a>)
-</p>
+<!-- Основна інформація профілю -->
+<div>
+    <p><strong>Пошта:</strong> <span th:text="${user.email}">email@example.com</span>
+        <sec:authorize access="principal.username == ${user.email}">
+            (<a href="#" onclick="showForm('updateEmailForm');return false">Змінити</a>)
+        </sec:authorize>
+    </p>
+    <p><strong>Телефон:</strong> <span th:text="${user.phoneNumber}">0XXXXXXXXX</span>
+        <sec:authorize access="principal.username == ${user.email}">
+            (<a href="#" onclick="showForm('updatePhoneForm');return false">Змінити</a>)
+        </sec:authorize>
+    </p>
+    <p><strong>Ім'я:</strong> <span th:text="${user.firstName}">Ім'я</span>
+        <sec:authorize access="principal.username == ${user.email}">
+            (<a href="#" onclick="showForm('updateFirstNameForm');return false">Змінити</a>)
+        </sec:authorize>
+    </p>
+    <p><strong>Прізвище:</strong> <span th:text="${user.lastName}">Прізвище</span>
+        <sec:authorize access="principal.username == ${user.email}">
+            (<a href="#" onclick="showForm('updateLastNameForm');return false">Змінити</a>)
+        </sec:authorize>
+    </p>
+    <p><strong>Пароль:</strong> ********
+        <sec:authorize access="principal.username == ${user.email}">
+            (<a href="#" onclick="showForm('updatePasswordForm');return false">Змінити</a>)
+        </sec:authorize>
+    </p>
+</div>
 
-<div id="updateEmailForm" class="edit-form" style="display:none;">
+<!-- Форми редагування (тільки власник) -->
+<div id="updateEmailForm" class="edit-form" style="display:none">
     <h3>Оновлення електронної пошти</h3>
     <form th:action="@{/profile/update-email}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <label>Нова пошта:
             <input type="email" name="newEmail" required
-                   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="example@domain.com" />
+                   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"/>
         </label>
         <button type="submit">Надіслати код підтвердження</button>
     </form>
 </div>
 
-<div id="updatePhoneForm" class="edit-form" style="display:none;">
+<div id="updatePhoneForm" class="edit-form" style="display:none">
     <h3>Оновлення номера телефону</h3>
     <form th:action="@{/profile/update-phone}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        <label>Новий номер телефону:
-            <input type="text" name="newPhone" required pattern="0\d{9}" placeholder="0XXXXXXXXX" />
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <label>Новий номер:
+            <input type="text" name="newPhone" required pattern="0\d{9}"/>
         </label>
-        <button type="submit">Оновити номер</button>
+        <button type="submit">Оновити</button>
     </form>
 </div>
 
-<div id="updateFirstNameForm" class="edit-form" style="display:none;">
+<div id="updateFirstNameForm" class="edit-form" style="display:none">
     <h3>Оновлення імені</h3>
     <form th:action="@{/profile/update-firstname}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <label>Нове ім'я:
-            <input type="text" name="newFirstName" required />
+            <input type="text" name="newFirstName" required maxlength="255"/>
         </label>
-        <button type="submit">Оновити ім'я</button>
+        <button type="submit">Оновити</button>
     </form>
 </div>
 
-<div id="updateLastNameForm" class="edit-form" style="display:none;">
+<div id="updateLastNameForm" class="edit-form" style="display:none">
     <h3>Оновлення прізвища</h3>
     <form th:action="@{/profile/update-lastname}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <label>Нове прізвище:
-            <input type="text" name="newLastName" required />
+            <input type="text" name="newLastName" required maxlength="255"/>
         </label>
-        <button type="submit">Оновити прізвище</button>
+        <button type="submit">Оновити</button>
     </form>
 </div>
 
-<div id="updatePasswordForm" class="edit-form" style="display:none;">
+<div id="updatePasswordForm" class="edit-form" style="display:none">
     <h3>Оновлення паролю</h3>
     <form th:action="@{/profile/update-password}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <label>Новий пароль:
-            <input type="password" name="newPassword" required />
+            <input type="password" name="newPassword" required minlength="8" maxlength="50"/>
         </label>
-        <button type="submit">Оновити пароль</button>
+        <button type="submit">Оновити</button>
     </form>
 </div>
-<p><a th:href="@{/profile/delete}">Видалити профіль</a></p>
-<p><a th:href="@{/home}">Повернутися на головну</a></p>
+
+<!-- Секція замовлень -->
+<sec:authorize access="principal.username == ${user.email} or hasAnyAuthority('ADMIN','MANAGER')">
+    <h2>Замовлення</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Послуга</th>
+            <th>Документи</th>
+            <th>Дата</th>
+            <th>Статус</th>
+            <th sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">Змінити статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order,iter : ${orders}">
+            <td th:text="${iter.index + 1}">1</td>
+            <td th:text="${order.serviceItem.name}">Послуга</td>
+            <td>
+                <ul>
+                    <li th:each="file : ${order.orderFiles}">
+                        <a th:href="@{/order/download/{id}(id=${file.id})}"
+                           th:text="${file.fileName}">file.pdf</a>
+                    </li>
+                    <li th:if="${#lists.isEmpty(order.orderFiles)}">Немає файлів</li>
+                </ul>
+            </td>
+            <td th:text="${#temporals.format(order.createdAt,'dd.MM.yyyy HH:mm')}">01.01.2025 12:00</td>
+            <td th:text="${order.status}"></td>
+            <td sec:authorize="hasAnyAuthority('ADMIN','MANAGER')">
+                <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" name="userId" th:value="${user.id}"/>
+                    <select name="newStatus">
+                        <option th:each="st : ${T(ua.rzs.model.Order.OrderStatus).values()}"
+                                th:value="${st.name()}"
+                                th:text="${st.displayName}"
+                        th:selected="${st} == ${order.status}"></option>
+                    </select>
+                    <button type="submit">Оновити</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</sec:authorize>
+
+<p>
+    <sec:authorize access="principal.username == ${user.email}">
+        <a th:href="@{/profile/delete}">Видалити профіль</a> |
+    </sec:authorize>
+    <a th:href="@{/home}">Повернутися на головну</a>
+</p>
 </body>
 </html>
-

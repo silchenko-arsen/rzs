@@ -8,4 +8,8 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/insert-roles.yaml
   - include:
-      file: db/changelog/changes/create-service-table.yaml
+      file: db/changelog/changes/create-services-table.yaml
+  - include:
+      file: db/changelog/changes/create-orders-table.yaml
+  - include:
+      file: db/changelog/changes/create-order-files-table.yaml

@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-orders-table
+      author: silchenko_arsen
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: service_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: comment
+                  type: TEXT
+                  constraints:
+                    nullable: true
+              - column:
+                  name: status
+                  type: varchar(20)
+                  defaultValue: 'PENDING'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_orders_user
+            baseTableName: orders
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            constraintName: fk_orders_service
+            baseTableName: orders
+            baseColumnNames: service_id
+            referencedTableName: services
+            referencedColumnNames: id
