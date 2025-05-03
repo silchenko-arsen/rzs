@@ -62,7 +62,7 @@ public class Order {
         PENDING("В обробці"),    // нове, очікує обробки
         APPROVED("Схвалено"),    // схвалено
         REJECTED("Відхилено"),   // відхилено
-        PAYED("Оплачено");
+        PAID("Оплачено");
 
         private final String displayName;
 
