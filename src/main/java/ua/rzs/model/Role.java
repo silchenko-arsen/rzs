@@ -40,6 +40,6 @@ public class Role implements GrantedAuthority {
     }
 
     public enum RoleName {
-        ADMIN, MANAGER, USER
+        ADMIN, USER
     }
 }
