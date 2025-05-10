@@ -28,7 +28,7 @@ public class ProfileController {
     private final UserService userService;
     private final OrderService orderService;
 
-    @Secured({"ADMIN", "MANAGER"})
+    @Secured({"ADMIN"})
     @GetMapping("/all")
     public String listProfiles(Model model) {
         model.addAttribute("users", userService.findAllUsers());
@@ -36,7 +36,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}")
-    @Secured({"ADMIN", "MANAGER"})
+    @Secured({"ADMIN"})
     public String viewProfile(@PathVariable Long id, Model model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);

@@ -46,7 +46,7 @@ public class OrderController {
     }
 
     @PostMapping("/orders/{id}/status")
-    @Secured({"ADMIN", "MANAGER"})
+    @Secured({"ADMIN"})
     public String changeOrderStatus(
             @PathVariable Long id,
             @RequestParam Order.OrderStatus newStatus,
@@ -59,7 +59,7 @@ public class OrderController {
     }
 
     @GetMapping("order/download/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER') or @orderFileRepo.findById(#id).get().order.user.email == principal.username")
+    @PreAuthorize("hasAnyAuthority('ADMIN') or @orderFileRepo.findById(#id).get().order.user.email == principal.username")
     public ResponseEntity<Resource> downloadFile(@PathVariable Long id) {
         return orderService.findFileById(id);
     }

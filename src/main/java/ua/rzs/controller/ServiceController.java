@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import ua.rzs.model.ServiceItem;
 import ua.rzs.service.ServiceItemService;
 
-@PreAuthorize("hasAuthority('MANAGER')")
+@PreAuthorize("hasAuthority('ADMIN')")
 @Controller
 @RequestMapping("/services")
 @RequiredArgsConstructor
