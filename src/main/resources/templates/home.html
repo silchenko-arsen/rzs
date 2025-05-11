@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Головна сторінка</title>
 </head>
+<style>
+    table { border-collapse: collapse; width: 100%; margin-top: 1em; }
+    th, td { border: 1px solid #ddd; padding: .5em; }
+    th { background: #f0f0f0; }
+</style>
 <body>
 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 <h1>Головна сторінка</h1>
 <h2>Список послуг</h2>
-<table border="1">
+<table>
     <thead>
     <tr>
         <th>Назва</th>

@@ -110,7 +110,7 @@
 </div>
 
 <!-- Секція замовлень -->
-<sec:authorize access="principal.username == ${user.email} or hasAnyAuthority('ADMIN','MANAGER')">
+<sec:authorize access="principal.username == ${user.email} or hasAnyAuthority('ADMIN')">
     <h2>Замовлення</h2>
     <table>
         <thead>
