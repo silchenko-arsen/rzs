@@ -60,8 +60,6 @@ public class ProfileController {
                               RedirectAttributes redirectAttributes) {
         try {
             userService.initiateEmailUpdate(principal.getName(), newEmail);
-            redirectAttributes.addFlashAttribute("message", "Код підтвердження надіслано на нову пошту. Будь ласка, введіть його.");
-            redirectAttributes.addFlashAttribute("showVerifyEmailForm", true);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/profile";
@@ -75,7 +73,6 @@ public class ProfileController {
                                  RedirectAttributes redirectAttributes) {
         try {
             userService.verifyNewEmail(principal.getName(), code);
-            redirectAttributes.addFlashAttribute("message", "Пошта успішно оновлена.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "verify-new-email";
@@ -89,7 +86,6 @@ public class ProfileController {
                               RedirectAttributes redirectAttributes) {
         try {
             userService.updatePhoneNumber(principal.getName(), newPhone);
-            redirectAttributes.addFlashAttribute("message", "Номер телефону успішно оновлено.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
@@ -102,7 +98,6 @@ public class ProfileController {
                                   RedirectAttributes redirectAttributes) {
         try {
             userService.updateFirstName(principal.getName(), newFirstName);
-            redirectAttributes.addFlashAttribute("message", "Ім'я успішно оновлено.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
@@ -115,7 +110,6 @@ public class ProfileController {
                                  RedirectAttributes redirectAttributes) {
         try {
             userService.updateLastName(principal.getName(), newLastName);
-            redirectAttributes.addFlashAttribute("message", "Прізвище успішно оновлено.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
@@ -128,7 +122,6 @@ public class ProfileController {
                                  RedirectAttributes redirectAttributes) {
         try {
             userService.updatePassword(principal.getName(), newPassword);
-            redirectAttributes.addFlashAttribute("message", "Пароль успішно оновлено.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
@@ -142,7 +135,6 @@ public class ProfileController {
         try {
             userService.deleteUser(principal.getName());
             request.getSession().invalidate();
-            redirectAttributes.addFlashAttribute("message", "Ваш профіль успішно видалено.");
             return "redirect:/auth/login?deleted";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Не вдалося видалити профіль: " + e.getMessage());
