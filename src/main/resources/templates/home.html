@@ -22,17 +22,17 @@
         <td th:text="${service.price}">Ціна</td>
         <td>
             <a th:href="@{'/order/' + ${service.id}}">Замовити</a>
-            <a sec:authorize="hasAuthority('MANAGER')" th:href="@{'/services/edit/' + ${service.id}}">Редагувати</a>
-            <a sec:authorize="hasAuthority('MANAGER')" th:href="@{'/services/delete/' + ${service.id}}" onclick="return confirm('Ви впевнені?');">Видалити</a>
+            <a sec:authorize="hasAuthority('ADMIN')" th:href="@{'/services/edit/' + ${service.id}}">Редагувати</a>
+            <a sec:authorize="hasAuthority('ADMIN')" th:href="@{'/services/delete/' + ${service.id}}" onclick="return confirm('Ви впевнені?');">Видалити</a>
         </td>
     </tr>
     </tbody>
 </table>
-<div sec:authorize="hasAuthority('MANAGER')">
+<div sec:authorize="hasAuthority('ADMIN')">
     <p><a th:href="@{/services/new}">Створити нову послугу</a></p>
 </div>
 <div sec:authorize="isAuthenticated()">
-    <p><a sec:authorize="hasAnyAuthority('MANAGER', 'ADMIN')" th:href="@{/profile/all}">Акаунти</a></p>
+    <p><a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/profile/all}">Акаунти</a></p>
     <p><a th:href="@{/profile}">Профіль</a></p>
     <form th:action="@{/auth/logout}" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
